@@ -3,6 +3,19 @@
 Created on Fri Mar 20 18:15:38 2020
 @author: this_
 """
+#---------------------------------------------------------------------------------------------------------------
+#One user to one common file token for now
+
+#TODO:
+
+#To implement:
+#1. Adding new events
+#2. Multiple user and token storage
+#3. Periodic notifications
+#4. Reading events
+
+#----------------------------------------------------------------------------------------------------------------
+
 #import all the libs
 
 from __future__ import print_function
@@ -22,7 +35,7 @@ SCOPES='https://www.googleapis.com/auth/calendar.readonly'
 #---------------------------------------------------------------------------------------------------------------
 
 #initialising telegram bot nonsense
-token1="1121399263:AAEeEzDX8Q0B-JmO04XM7ztU_8o0ffxAL38"
+token1="1121399263:AAEeEzDX8Q0B-JmO04XM7ztU_8o0ffxAL38" #hide this too
 import telegram
 #import logging
 bot = telegram.Bot(token=token1)
