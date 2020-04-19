@@ -9,16 +9,17 @@ Created on Fri Mar 20 18:15:38 2020
 #TODO:
 
 #To implement:
-#1. Adding new events
-#2. Multiple user and token storage
-#3. Periodic notifications
-#4. Reading events
+#1. Multiple user and token storage
+#2. Periodic notifications
+#3. Reading event details
+#4. make your bot reply to message keywords
 
 #----------------------------------------------------------------------------------------------------------------
 
 #import all the libs
 
 from __future__ import print_function
+import os
 import os.path
 import pickle
 from googleapiclient.discovery import build
@@ -30,13 +31,14 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 import datetime
 
 client_secrets='client_secret_434636886184-9dgh3kd20f3k51uduor3eg6s79i1dse8.apps.googleusercontent.com.json' #rmb to hide this
-SCOPES='https://www.googleapis.com/auth/calendar.readonly'
+SCOPES='https://www.googleapis.com/auth/calendar.readonly' #read only
 
 #---------------------------------------------------------------------------------------------------------------
 
 #initialising telegram bot nonsense
 token1="1121399263:AAEeEzDX8Q0B-JmO04XM7ztU_8o0ffxAL38" #hide this too
 import telegram
+#PORT = int(os.environ.get('PORT', '8443'))
 #import logging
 bot = telegram.Bot(token=token1)
 from telegram.ext import Updater
@@ -45,7 +47,8 @@ from telegram.ext import CommandHandler
 
 updater = Updater(token=token1, use_context=True)
 dispatcher = updater.dispatcher
-#logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+
+#logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)   
 
 #----------------------------------------------------------------------------------------------------------------
 
@@ -112,6 +115,7 @@ dispatcher.add_handler(fetch10_handler)
 
 #--------------------------------------------------------------------------------------------------------------
 
+#sync new account
 def addnew(update,context):
     context.bot.send_message(chat_id=update.effective_chat.id, text='Sync to new calendar?')
     if os.path.exists('token.pickle'):
@@ -122,9 +126,13 @@ addnew_handler=CommandHandler('addnew',addnew)
 dispatcher.add_handler(addnew_handler)
 
 #--------------------------------------------------------------------------------------------------------------
-#create new event in calendar
-#def new_event(update,context):
+
+#readtext
+# @bot.MessageHandler
+# def 
         
 
+#----------------------------------------------------------------------------------------------------------------
+#web deployment
 #start bot
 updater.start_polling()
