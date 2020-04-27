@@ -38,17 +38,15 @@ SCOPES='https://www.googleapis.com/auth/calendar.readonly' #read only
 #initialising telegram bot nonsense
 token1="1121399263:AAEeEzDX8Q0B-JmO04XM7ztU_8o0ffxAL38" #hide this too
 import telegram
-#PORT = int(os.environ.get('PORT', '8443'))
-#import logging
 bot = telegram.Bot(token=token1)
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
-#from telegram.ext import MessageHandler, Filters #to process multiple users
+from telegram.ext import MessageHandler, Filters #to process received messages, not just commands
+from telegram.ext import InlineQueryHandler #to process inline queries
+from telegram import InlineQueryResultArticle, InputTextMessageContent
 
 updater = Updater(token=token1, use_context=True)
 dispatcher = updater.dispatcher
-
-#logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)   
 
 #----------------------------------------------------------------------------------------------------------------
 
@@ -127,12 +125,51 @@ dispatcher.add_handler(addnew_handler)
 
 #--------------------------------------------------------------------------------------------------------------
 
-#readtext
-# @bot.MessageHandler
-# def 
-        
+#readtext and respond
+def createnew(update,context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text='Name of new event?')
+createnew_handler=CommandHandler('createnew',createnew)
+dispatcher.add_handler(createnew_handler)
+
+#respond - template; change this to whatever you want it to respond
+
+def respond(update, context):
+    name=update.message.text
+    context.bot.send_message(chat_id=update.effective_chat.id, text=(name+'123'))
+response_handler = MessageHandler(Filters.text & (~Filters.command), respond)
+dispatcher.add_handler(response_handler)
+
+#---------------------------------------------------------------------------------------------------------------
+
+#command exception handler
+def unknown(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't understand that command.")
+
+unknown_handler = MessageHandler(Filters.command, unknown)
+dispatcher.add_handler(unknown_handler)
 
 #----------------------------------------------------------------------------------------------------------------
-#web deployment
+#try inline queries
+
+def inline_caps(update, context):
+    query = update.inline_query.query
+    if not query:
+        return
+    results = list()
+    results.append(
+        InlineQueryResultArticle(
+            id=query.upper(),
+            title='Caps',
+            input_message_content=InputTextMessageContent(query.upper())
+        )
+    )
+    context.bot.answer_inline_query(update.inline_query.id, results)
+    
+inline_caps_handler = InlineQueryHandler(inline_caps)
+dispatcher.add_handler(inline_caps_handler)
+
+#----------------------------------------------------------------------------------------------------------------
+#guess i'll just deploy it on the PI instead of the webhook method
+
 #start bot
 updater.start_polling()
