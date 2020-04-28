@@ -30,13 +30,13 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 #initialise google calendar api nonsense
 import datetime
 
-client_secrets='client_secret_434636886184-9dgh3kd20f3k51uduor3eg6s79i1dse8.apps.googleusercontent.com.json' #rmb to hide this
+client_secrets='' #rmb to hide this
 SCOPES='https://www.googleapis.com/auth/calendar.readonly' #read only
 
 #---------------------------------------------------------------------------------------------------------------
 
 #initialising telegram bot nonsense
-token1="1121399263:AAEeEzDX8Q0B-JmO04XM7ztU_8o0ffxAL38" #hide this too
+token1="" #hide this too
 import telegram
 bot = telegram.Bot(token=token1)
 from telegram.ext import Updater
